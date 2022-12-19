@@ -18,7 +18,7 @@ jobs:
       run: npm run test
   lint:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/develop' && github.actor != 'dependabot[bot]'
+    if: github.actor != 'dependabot[bot]'
     steps:
       - uses: actions/checkout@v3
       - name: Setup Node
@@ -35,17 +35,17 @@ jobs:
         run: echo "variables is ${{steps.act-A.outputs.act}}"
   deploy:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/develop' && github.actor != 'dependabot[bot]' && success()
+    if: github.ref == 'refs/heads/master' && github.actor != 'dependabot[bot]' && success()
     needs: [lint, test]
     permissions:
       id-token: write
       contents: read
     steps:
       - uses: actions/checkout@v3
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          role-to-assume: ${{ secrets.AWS_IAM_ROLE_ARN }}
-          aws-region: ap-northeast-1
+#      - name: Configure AWS credentials
+#        uses: aws-actions/configure-aws-credentials@v1
+#        with:
+#          role-to-assume: ${{ secrets.AWS_IAM_ROLE_ARN }}
+#          aws-region: ap-northeast-1
 #      - name: Upload files to AWS S3
 #        run: aws s3  sync ./index.js s3://my-s3-test-website-bucket

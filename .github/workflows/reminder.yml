@@ -1,5 +1,7 @@
 name: Reminder
-on: [push, pull_request]
+on:
+  pull_request:
+    types: [opened, synchronize]
 
 env:
   NODE_VERSION: "18.x"
